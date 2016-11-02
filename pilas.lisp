@@ -1,5 +1,9 @@
 (defpackage "PILAS"
   (:use #:cl
+        #:alexandria
+        #:hunchentoot
+        #:trivia
+        #:trivia.ppcre
         #:spinneret)
   (:export
    #:+wiki-root+
@@ -19,7 +23,8 @@ Diseño:
 Flat file database. nombre del archivo es el título de la entrada. {{ }} embeber lisp
 |#
 
-(defparameter +wiki-root+ (merge-pathnames #P"wiki/" (directory-namestring *load-truename*))
+
+(defparameter +wiki-root+ (asdf/system:system-relative-pathname :pilas #P"wiki/")
   "The top level directory where the wiki database lives.")
 
 (defclass entry ()
@@ -66,30 +71,92 @@ Flat file database. nombre del archivo es el título de la entrada. {{ }} embebe
   "Return a list of  every entry in the wiki."
   (mapcar #'load-entry (mapcar #'pathname-name (uiop/filesystem:directory-files +wiki-root+))))
 
-(defun random-elt (list)
-  (elt list (random (length list))))
+(defun find-entry-by-title (title)
+  (find title (list-entries) :test #'string-equal :key #'title))
 
 (defun random-entry ()
   "Return a random entry."
   (random-elt (list-entries)))
 
 
-;; Routes
+;; Templates
 (defmacro with-page ((&key title) &body body)
-   `(with-html
-      (:doctype)
-      (:html
-        (:head
-         (:title ,title))
-        (:body ,@body))))
+  `(with-html-string
+     (:doctype)
+     (:html
+      (:head
+       (:title ,title))
+      (:body (navigation-bar)
+       ,@body))))
 
-(defun index ()
-  "A list of links to every artile"
+(deftag navigation-bar (control attrs)
+  (declare (ignore control attrs))
+  '(:ul
+    (:li (:a :href "/create/" "Create new article"))
+    (:li (:a :href "/random/" "Random article"))))
+
+
+;; Routes & controllers
+(defun clear-routes ()
+  (setf hunchentoot:*dispatch-table*
+        (last hunchentoot:*dispatch-table*)))
+
+(defun url-for-entry (entry)
+  (format nil "/entry/~A" (title entry)))
+
+(hunchentoot:define-easy-handler (index :uri "/") ()
+  "A list of links to every article"
   (with-page (:title "Index")
     (:ul
      (loop :for entry :in (list-entries)
-           :collect(:li (title entry))))))
+           :collect (:li (:a :href (url-for-entry entry) (title entry)))))))
 
+(hunchentoot:define-easy-handler (create-entry :uri "/create/") ()
+  (with-page (:title "new-article")
+    ;; XXX: Abstract to a validation layer
+    (:form
+     (:label "Título:" (:input ))
+     (:label "Content:" (:textarea))
+     (:input :type "submit"))))
+
+(defmacro define-regexp-route (name (url-regexp &rest capture-names) &body body)
+  (multiple-value-bind (body declarations documentation)
+      (parse-body body :documentation t)
+    `(progn
+       (defun ,name ()
+         ,@(when documentation
+             (list documentation))
+         ,@declarations
+         (match (script-name *request*)
+           ((ppcre ,url-regexp ,@capture-names)
+            ,@body)))
+       (push (create-regex-dispatcher ,url-regexp ',name)
+             *dispatch-table*))))
+
+(define-regexp-route show-entry ("^/entry/(.*)$" entry-title)
+  "Display the contents of the ENTRY."
+  (when-let ((entry (find-entry-by-title entry-title)))
+    (with-page (:title (title entry))
+      (:p (content entry)))))
+
+
+
+
+;; Server
+(defvar *server* nil)
+
+(defvar *http-host* "127.0.0.1")
+(defvar *http-port* 8000)
+
+(defun start-server ()
+  (setf *server*
+        (hunchentoot:start (make-instance 'hunchentoot:easy-acceptor
+                                          :address *http-host*
+                                          :port *http-port*))))
+
+(defun stop-server ()
+  (when *server*
+    (hunchentoot:stop *server*)))
 
 ;; Fixtures
 (make-instance 'entry :title "José Olaya"
