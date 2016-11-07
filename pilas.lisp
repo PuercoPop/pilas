@@ -84,7 +84,8 @@ Design:
 
 (defun load-entry (digest)
   (with-open-file (in (merge-pathnames digest +wiki-root+) :direction :input :external-format :utf-8)
-    (plist-entry (read in))))
+    (let ((*package* (find-package "PILAS")))
+      (plist-entry (read in)))))
 
 (defun list-entry-titles ()
   "Return a list of the title of every entry in the wiki."
