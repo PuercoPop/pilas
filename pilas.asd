@@ -8,4 +8,9 @@
                #:trivia
                #:trivia.ppcre
                #:spinneret)
-  :components ((:file "pilas")))
+  :serial t
+  :components ((:file "package")
+               (:file "pilas")
+               (:file "server")
+               (:File "controllers")
+               (:file "templates")))
