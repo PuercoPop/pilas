@@ -35,10 +35,19 @@
 (hunchentoot:define-easy-handler (create-entry :uri "/create/") ()
   (with-page (:title "new-article")
     ;; XXX: Abstract to a validation layer
-    (:form
-     (:label "Título:" (:input ))
-     (:label "Content:" (:textarea))
-     (:input :type "submit"))))
+    (:form :action "/validate-entry/" :method "post"
+           (:ul
+            (:li (:label "Título:" ))
+            (:li (:input :type "text" :name "title"))
+            (:li (:label "Content:"))
+            (:li (:textarea :name "content")))
+           (:input :type "submit"))))
+
+(define-easy-handler (validate-entry-endpoint :uri "/validate-entry/") (title content)
+  (let ((entry (make-entry title content)))
+    ;; TODO: Add validation
+    (save-entry entry)
+    (redirect (url-for-entry entry))))
 
 (define-regexp-route display-entry ("^/entry/(.*)$" entry-title)
   "Display the contents of the ENTRY."
