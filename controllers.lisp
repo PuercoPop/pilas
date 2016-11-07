@@ -38,7 +38,7 @@
     (:form :action "/validate-entry/" :method "post"
            (:ul
             (:li (:label "Título:" ))
-            (:li (:input :type "text" :name "title"))
+            (:li (:input :type "text" :name "title" :required t))
             (:li (:label "Content:"))
             (:li (:textarea :name "content")))
            (:input :type "submit"))))
