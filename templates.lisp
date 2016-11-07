@@ -3,6 +3,7 @@
 (deftag navigation-bar (control attrs)
   (declare (ignore control attrs))
   '(:ul
+    (:li (:a :href "/" "Front Page"))
     (:li (:a :href "/create/" "Create new article"))
     (:li (:a :href "/random/" "Random article"))))
 
