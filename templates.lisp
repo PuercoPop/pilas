@@ -14,3 +14,7 @@
   '(:ul
     (:li (:a :href "/create/" "Create new article"))
     (:li (:a :href "/random/" "Random article"))))
+
+(defun show-entry (entry)
+  (with-page (:title (title entry))
+      (:p (content entry))))

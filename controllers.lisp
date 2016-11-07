@@ -17,8 +17,7 @@
 
 (define-easy-handler (display-random-entry :uri "/random/") ()
   (let ((entry (random-entry)))
-    (with-page (:title (title entry))
-      (:p (content entry)))))
+    (show-entry entry)))
 
 (hunchentoot:define-easy-handler (create-entry :uri "/create/") ()
   (with-page (:title "new-article")
@@ -42,8 +41,7 @@
        (push (create-regex-dispatcher ,url-regexp ',name)
              *dispatch-table*))))
 
-(define-regexp-route show-entry ("^/entry/(.*)$" entry-title)
+(define-regexp-route display-entry ("^/entry/(.*)$" entry-title)
   "Display the contents of the ENTRY."
   (when-let ((entry (find-entry-by-title entry-title)))
-    (with-page (:title (title entry))
-      (:p (content entry)))))
+    (show-entry entry)))
