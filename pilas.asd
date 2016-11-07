@@ -4,6 +4,8 @@
   :description "The bare bones wiki"
   :license "APLGv3+"
   :depends-on (#:alexandria
+               #:closer-mop
+               #:ironclad
                #:hunchentoot
                #:trivia
                #:trivia.ppcre
