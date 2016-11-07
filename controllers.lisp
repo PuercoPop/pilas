@@ -15,6 +15,11 @@
      (loop :for entry :in (list-entries)
            :collect (:li (:a :href (url-for-entry entry) (title entry)))))))
 
+(define-easy-handler (display-random-entry :uri "/random/") ()
+  (let ((entry (random-entry)))
+    (with-page (:title (title entry))
+      (:p (content entry)))))
+
 (hunchentoot:define-easy-handler (create-entry :uri "/create/") ()
   (with-page (:title "new-article")
     ;; XXX: Abstract to a validation layer
