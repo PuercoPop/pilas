@@ -6,7 +6,7 @@
         (last hunchentoot:*dispatch-table*)))
 
 (defun url-for-entry (entry)
-  (format nil "/entry/~A" (title entry)))
+  (format nil "/entry/~A" (url-encode (title entry))))
 
 (hunchentoot:define-easy-handler (index :uri "/") ()
   "A list of links to every article"
