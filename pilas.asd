@@ -10,9 +10,8 @@
                #:trivia
                #:trivia.ppcre
                #:spinneret)
-  :serial t
   :components ((:file "package")
                (:file "pilas")
                (:file "server")
-               (:File "controllers")
-               (:file "templates")))
+               (:file "templates")
+               (:File "controllers" :depends-on ("templates" "package"))))
