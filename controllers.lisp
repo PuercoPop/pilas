@@ -25,7 +25,8 @@
 ;; Handlers
 (hunchentoot:define-easy-handler (index :uri "/") ()
   "A list of links to every article"
-  (with-page (:title "Index")
+  (with-page (:title "Index"
+              :css (global))
     (:ul
      (loop :for entry :in (list-entries)
            :collect (:li (:a :href (url-for-entry entry) (title entry)))))))
