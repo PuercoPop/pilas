@@ -1,6 +1,8 @@
 ;; Routes & controllers
 (in-package "PILAS")
 
+
+;; Helpers
 (defun clear-routes ()
   (setf hunchentoot:*dispatch-table*
         (last hunchentoot:*dispatch-table*)))
@@ -19,9 +21,13 @@
        (push (create-regex-dispatcher ,url-regexp ',name)
              *dispatch-table*))))
 
+
+;; URL Helpers
 (defun url-for-entry (entry)
   (format nil "/entry/~A" (url-encode (title entry))))
 
+
+;; Handlers
 (hunchentoot:define-easy-handler (index :uri "/") ()
   "A list of links to every article"
   (with-page (:title "Index")
