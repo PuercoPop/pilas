@@ -5,6 +5,7 @@
   :license "APLGv3+"
   :depends-on (#:alexandria
                #:closer-mop
+               #:css-lite
                #:ironclad
                #:hunchentoot
                #:trivia
@@ -13,5 +14,7 @@
   :components ((:file "package")
                (:file "pilas")
                (:file "server")
-               (:file "templates")
-               (:File "controllers" :depends-on ("templates" "package"))))
+               (:file "urls")
+               (:file "css" :depends-on ("urls"))
+               (:file "templates" :depends-on ("css" "urls"))
+               (:File "controllers" :depends-on ("templates" "package" "urls"))))
