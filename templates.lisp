@@ -1,11 +1,10 @@
 (in-package "PILAS")
 
-(deftag navigation-bar (control attrs)
-  (declare (ignore control attrs))
-  '(:ul
-    (:li (:a :href "/" "Front Page"))
-    (:li (:a :href "/create/" "Create new article"))
-    (:li (:a :href "/random/" "Random article"))))
+(defun navigation-bar ()
+  (with-html (:ul
+              (:li (:a :href "/" "Front Page"))
+              (:li (:a :href "/create/" "Create new article"))
+              (:li (:a :href "/random/" "Random article")))))
 
 (defmacro with-page ((&key title (css nil css-supplied-p)) &body body)
   `(with-html-string
