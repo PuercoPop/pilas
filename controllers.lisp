@@ -50,6 +50,10 @@
     ;; TODO: Add validation
     (save-entry entry)
     (redirect (url-for-entry entry))))
+(define-regexp-route entry-deletion ("^/entry/delete/(.*)$" entry-title)
+  (when-let ((entry (find-entry-by-title entry-title)))
+    (delete-entry entry))
+  (redirect "/"))
 
 (define-regexp-route display-entry ("^/entry/(.*)$" entry-title)
   "Display the contents of the ENTRY."

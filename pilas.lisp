@@ -87,6 +87,9 @@ Design:
     (let ((*package* (find-package "PILAS")))
       (plist-entry (read in)))))
 
+(defun delete-entry (entry)
+  (delete-file (entry-pathname entry)))
+
 (defun list-entry-titles ()
   "Return a list of the title of every entry in the wiki."
   (mapcar #'title
