@@ -23,8 +23,26 @@
   (with-page (:title (title entry)
               :css (global entry))
     (:aside
-     (:li :class "actions"
-          (:ul (:p (:a :href (url-for-entry-edition entry) "Editar")))))
+     (:ul :class "actions"
+          (:li (:a :href (url-for-entry-edition entry) "Editar"))
+          (:li (:a :href (url-for-entry-deletion entry) "Borrar"))))
     (:article
      (:h3 (title entry))
      (:p (content entry)))))
+
+(deftag entry-form (body attrs &key entry)
+  (declare (ignore body attrs))
+  `(:form :action "/validate-entry/" :method "post"
+          (:ul
+           (:li (:label "Título:" ))
+           (:li (:input :type "text" :name "title" :required t :value (title ,entry)))
+           (:li (:label "Content:"))
+           (:li (:textarea :name "content" (content ,entry))))
+          (:input :type "submit")))
+
+(defun show-entry-edit (entry)
+  (with-page (:title (title entry)
+              :css (global entry))
+    (:aside)
+    (:article
+     (entry-form :entry entry))))
