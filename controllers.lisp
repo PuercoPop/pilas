@@ -15,6 +15,8 @@
          ,@(when documentation
              (list documentation))
          ,@declarations
+         (when *debug*
+           (format *trace-output* "=== Calling ~A Handler ===" ',name))
          (match (script-name *request*)
            ((ppcre ,url-regexp ,@capture-names)
             ,@body)))
