@@ -12,9 +12,11 @@
                #:trivia.ppcre
                #:spinneret)
   :components ((:file "package")
-               (:file "pilas")
-               (:file "server")
-               (:file "urls")
-               (:file "css" :depends-on ("urls"))
-               (:file "templates" :depends-on ("css" "urls"))
-               (:File "controllers" :depends-on ("templates" "package" "urls"))))
+               (:file "pilas" :depends-on ("package"))
+               (:module "web"
+                :components ((:file "server")
+                             (:file "urls")
+                             (:file "css" :depends-on ("urls"))
+                             (:file "templates" :depends-on ("css" "urls"))
+                             (:File "handlers" :depends-on ("templates" "urls")))
+                :depends-on ("pilas" "package"))))
