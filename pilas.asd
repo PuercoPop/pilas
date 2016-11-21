@@ -2,7 +2,7 @@
 
 (defsystem "pilas"
   :description "The bare bones wiki"
-  :license "APLGv3+"
+  :license "AGPLv3+"
   :depends-on (#:alexandria
                #:babel
                #:closer-mop
