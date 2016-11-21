@@ -1,4 +1,4 @@
-(in-package "PILAS")
+(in-package "PILAS/WEB")
 
 (defun navigation-bar ()
   (with-html (:nav

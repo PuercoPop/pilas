@@ -6,19 +6,7 @@
   :depends-on (#:alexandria
                #:babel
                #:closer-mop
-               #:css-lite
-               #:ironclad
-               #:hunchentoot
-               #:trivia
-               #:trivia.ppcre
-               #:spinneret)
+               #:ironclad)
   :components ((:file "package")
                (:file "users" :depends-on ("package"))
-               (:file "pilas" :depends-on ("users" "package"))
-               (:module "web"
-                :components ((:file "server")
-                             (:file "urls")
-                             (:file "css" :depends-on ("urls"))
-                             (:file "templates" :depends-on ("css" "urls"))
-                             (:File "handlers" :depends-on ("templates" "urls")))
-                :depends-on ("pilas" "package"))))
+               (:file "pilas" :depends-on ("users" "package"))))

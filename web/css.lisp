@@ -1,4 +1,4 @@
-(in-package "PILAS")
+(in-package "PILAS/WEB")
 
 (define-easy-handler (global-css :uri (url-for-css 'global)) ()
   (setf (content-type*) "text/css")

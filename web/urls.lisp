@@ -1,4 +1,4 @@
-(in-package "PILAS")
+(in-package "PILAS/WEB")
 
 (defun url-for-css (filename)
   (format nil "/css/~A.css" filename))

@@ -1,4 +1,4 @@
-(in-package "PILAS")
+(in-package "PILAS/WEB")
 
 (defvar *server* nil)
 

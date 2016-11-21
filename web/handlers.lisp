@@ -1,5 +1,5 @@
 ;; Routes & controllers
-(in-package "PILAS")
+(in-package "PILAS/WEB")
 
 
 ;; Helpers
