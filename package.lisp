@@ -14,4 +14,8 @@
    #:save-entry
    #:load-entry
    #:list-entries
-   #:list-entry-titles))
+   #:list-entry-titles
+
+   #:list-users
+   #:add-user
+   #:log-user))

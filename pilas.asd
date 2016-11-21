@@ -4,6 +4,7 @@
   :description "The bare bones wiki"
   :license "APLGv3+"
   :depends-on (#:alexandria
+               #:babel
                #:closer-mop
                #:css-lite
                #:ironclad
@@ -12,7 +13,8 @@
                #:trivia.ppcre
                #:spinneret)
   :components ((:file "package")
-               (:file "pilas" :depends-on ("package"))
+               (:file "users" :depends-on ("package"))
+               (:file "pilas" :depends-on ("users" "package"))
                (:module "web"
                 :components ((:file "server")
                              (:file "urls")
