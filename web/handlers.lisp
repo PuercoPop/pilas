@@ -37,15 +37,9 @@
   (redirect (url-for-entry (random-entry))))
 
 (hunchentoot:define-easy-handler (create-entry :uri "/create/") ()
-  (with-page (:title "new-article")
-    ;; XXX: Abstract to a validation layer
-    (:form :action "/validate-entry/" :method "post"
-           (:ul
-            (:li (:label "Título:" ))
-            (:li (:input :type "text" :name "title" :required t))
-            (:li (:label "Content:"))
-            (:li (:textarea :name "content")))
-           (:input :type "submit"))))
+  (with-page (:title "new-article"
+              :css (global))
+    (entry-form)))
 
 (define-regexp-route display-entry ("^/entry/(.*?)/$" entry-title)
   "Display the contents of the ENTRY."

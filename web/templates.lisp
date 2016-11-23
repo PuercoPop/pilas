@@ -30,18 +30,27 @@
      (:h3 (title entry))
      (:p (content entry)))))
 
-(deftag entry-form (body attrs &key entry)
-  (declare (ignore body attrs))
-  `(:form :action "/validate-entry/" :method "post"
-          (:ul
-           (:li (:label "Título:" ))
-           (:li (:input :type "text" :name "title" :required t :value (title ,entry)))
-           (:li (:label "Content:"))
-           (:li (:textarea :name "content" (content ,entry))))
-          (:input :type "submit")))
+;; Copied verbatim from Spinneret's README.md
+(deftag input (default attrs &key name label (type "text"))
+   (once-only (name)
+     `(progn
+        (:label :for ,name ,label)
+        (:input :name ,name :id ,name :type ,type
+          ,@attrs
+          :value (progn ,@default)))))
+
+(deftag entry-form (extra-fields attrs &key (entry nil entry-provided-p))
+  (once-only (entry)
+    `(:form :action "/validate-entry/" :method "post" ,@attrs
+            (:ul
+             (:li (input :type "text" :name "title" :label "Título:" :required t (progn ,(when entry-provided-p `(title ,entry)))))
+             (:li (:label :for "content ""Content:"))
+             (:li (:textarea :name "content" (progn ,(when entry-provided-p `(content ,entry))))))
+            ,@extra-fields
+            (:input :type "submit"))))
 
 (defun show-entry-edit (entry)
-  (with-page (:title (title entry)
+  (with-page (:title (or title (title entry))
               :css (global entry))
     (:aside)
     (:article
