@@ -2,6 +2,7 @@
   (:use #:cl
         #:pilas
         #:alexandria
+        #:html-forms
         #:hunchentoot
         #:trivia
         #:trivia.ppcre
