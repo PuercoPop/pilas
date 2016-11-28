@@ -39,7 +39,7 @@
 (hunchentoot:define-easy-handler (create-entry :uri "/create/") ()
   (with-page (:title "new-article"
               :css (global))
-    (entry-form)))
+    (show (make-entry-form) *html*)))
 
 (define-regexp-route display-entry ("^/entry/(.*?)/$" entry-title)
   "Display the contents of the ENTRY."

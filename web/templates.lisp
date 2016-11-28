@@ -30,28 +30,11 @@
      (:h3 (title entry))
      (:p (content entry)))))
 
-;; Copied verbatim from Spinneret's README.md
-(deftag input (default attrs &key name label (type "text"))
-   (once-only (name)
-     `(progn
-        (:label :for ,name ,label)
-        (:input :name ,name :id ,name :type ,type
-          ,@attrs
-          :value (progn ,@default)))))
-
-(deftag entry-form (extra-fields attrs &key (entry nil entry-provided-p))
-  (once-only (entry)
-    `(:form :action "/validate-entry/" :method "post" ,@attrs
-            (:ul
-             (:li (input :type "text" :name "title" :label "Título:" :required t (progn ,(when entry-provided-p `(title ,entry)))))
-             (:li (:label :for "content ""Content:"))
-             (:li (:textarea :name "content" (progn ,(when entry-provided-p `(content ,entry))))))
-            ,@extra-fields
-            (:input :type "submit"))))
-
 (defun show-entry-edit (entry)
-  (with-page (:title (or title (title entry))
+  (with-page (:title (title entry)
               :css (global entry))
     (:aside)
     (:article
-     (entry-form :entry entry))))
+     (show (make-entry-form :title (title entry)
+                            :content (content entry))
+              *html*))))
