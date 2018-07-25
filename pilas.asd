@@ -1,5 +1,3 @@
-(in-package #:asdf-user)
-
 (defsystem "pilas"
   :description "The bare bones wiki"
   :license "AGPLv3+"

@@ -1,5 +1,3 @@
-(in-package #:asdf-user)
-
 (defsystem "pilas-web"
   :description "A web interface to the Pilas wiki"
   :license "AGPLv3+"
